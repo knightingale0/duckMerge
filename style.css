@@ -14,14 +14,13 @@ footer {
     }
 }
 
-
 #main {
     display: grid;
     grid-template-columns: 1fr 200px;
     height: 100%;
 }
 
-#game {
+#field {
     background-color: greenyellow;
 }
 
@@ -43,11 +42,32 @@ footer {
     height: 60%;
 }
 
+.inventory-icon {
+    max-width: 10%;
+    max-height: 10%;
+}
+
+.styled-list {
+    list-style-type: none;
+    padding: 0;
+}
 
 .duck {
-    position: absolute;
     width: 50px;
     height: 50px;
     background-color: yellow;
+}
+
+
+.item {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+}
+
+
+.grab {
+    position: absolute;
     cursor: grab;
+    user-select: none;
 }

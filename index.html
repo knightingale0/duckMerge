@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" href="style.css">
         <script src="scripts/game.js"></script></script>
+        <script src="scripts/items.js"></script></script>
     </head>
 
     <body>
@@ -12,15 +13,19 @@
             <!-- <p>game goes here</p> -->
 
             <div id="main">
-                <div id="game">
-                    <div class="duck"><img src="images/duck.png" width="50px">quack or smth</div>
+                <div id="field">
+                    <div class="thing duck grab"><img src="images/duck.png" width="50px"></div>
+                    <div class="thing duck grab"><img src="images/duck.png" width="50px"></div>
+                    <div class="thing item grab">not duck</div>
                 </div>
                 <div id="sidebar">
                     <div id="duck-list">
                         Ducks
+                        <button class="reset" onclick="resetDucks()">reset</button>
                     </div>
-                    <div id="inventory">
+                    <div id="items-list">
                         Food and Inventory
+                        <button class="reset" onclick="resetItems()">reset</button>
                     </div>
                 </div>
             </div>
