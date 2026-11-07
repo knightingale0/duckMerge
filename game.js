@@ -1,1 +1,8 @@
-alert("script loaded")
+
+
+
+
+
+window.onload = (e) => {
+    alert("window loaded")
+};
