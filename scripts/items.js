@@ -52,7 +52,7 @@ function num(n) {
 };
 
 function tick() {
-    for (let thing of document.querySelectorAll(".thing")) {
+    for (let thing of document.querySelectorAll("#field .thing")) {
         if (thing.dataset.despawn) {
             thing.dataset.despawn -= 1;
             if (thing.dataset.despawn <= 0) {
@@ -61,7 +61,7 @@ function tick() {
         }
     }
 
-    for (let duck of document.querySelectorAll(".duck")) {
+    for (let duck of document.querySelectorAll("#field .duck")) {
         //duck.style.left = pxtonum(duck.style.left)+10+"px";
 
         if (!duck.dataset.walkX && Math.random()<0.25/TPS) {
@@ -80,6 +80,13 @@ function tick() {
             normX *= Math.min(len, 50/TPS);
             normY *= Math.min(len, 50/TPS);
 
+            if (normX < 0) {
+                duck.style.transform = 'scaleX(-1)';
+            }
+            else {
+                duck.style.transform = 'scaleX(1)';
+            }
+
             duck.style.left = num(duck.style.left) + normX + "px";
             duck.style.top = num(duck.style.top) + normY + "px";
 
@@ -90,7 +97,7 @@ function tick() {
         }
     }
 
-    for (let thing of document.querySelectorAll(".thing")) {
+    for (let thing of document.querySelectorAll("#field .thing")) {
         if (thing.held) continue;
         thing.style.left = Math.max(bounds(field).minx, Math.min(num(thing.style.left), bounds(field).maxx - bounds(thing).width))+"px";
         thing.style.top = Math.max(bounds(field).miny, Math.min(num(thing.style.top), bounds(field).maxy - bounds(thing).height))+"px";
@@ -106,7 +113,7 @@ function tick() {
         fih.innerHTML = '<img src="images/pxfih-export.png" width="100%">';
         field.appendChild(fih);
 
-        const pond = document.querySelector(".pond");
+        const pond = document.querySelector("#field .pond");
 
         fih.style.left = bounds(pond).minx + Math.random() * (bounds(pond).width - bounds(fih).width) + "px";
         fih.style.top = bounds(pond).miny + Math.random() * (bounds(pond).height - bounds(fih).height) + "px";
@@ -170,7 +177,7 @@ function nearest(to) {
     let midx = bounds(to).midx;
     let midy = bounds(to).midy;
 
-    for (let thing of document.querySelectorAll(".thing")) {
+    for (let thing of document.querySelectorAll("#field .thing")) {
         if (thing == to) continue;
 
         let d = Math.sqrt(Math.pow(midx-bounds(thing).midx,2) + Math.pow(midy-bounds(thing).midy,2));

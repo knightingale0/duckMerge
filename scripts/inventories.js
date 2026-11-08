@@ -3,7 +3,8 @@ function itemToList(element, list) {
 
     let listItem = document.createElement("li");
 
-    listItem.appendChild(element.childNodes[0]);
+    
+    listItem.innerHTML += element.innerHTML;
     listItem.innerHTML += element.dataset.name;
     listItem.appendChild(element);  
     console.log(listItem)
@@ -18,9 +19,8 @@ function itemToList(element, list) {
 
 function listItemToElementFromLI(item) {
     console.log("AGH - return to field: ", item);
-    let element = item.childNodes[2]
+    let element = item.querySelector(".thing");
     element.style.display = "block";
-    // field.appendChild(element);
-    // item.remove();
-    // item.style.display = "none";
+    field.appendChild(element);
+    item.remove();
 }
