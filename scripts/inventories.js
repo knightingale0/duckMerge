@@ -1,40 +1,26 @@
 function itemToList(element, list) {
-    console.log("item to list");
+    console.log("item to list", element);
 
     let listItem = document.createElement("li");
 
-    // let button = document.createElement("button");
-    // button.innerText = "click";
-    // button.onclick = 'listItemToElementFromButton(this)';
-    // // button.addEventListener('click', function(event) {
-    // //     const button = event.currentTarget; 
-    // //     listItemToElement(button.parentNode);
-    // //     console.log("asdg");
-    // // });
-    // listItem.appendChild(button);
-
-    listItem.innerHTML += `<button onclick='listItemToElementFromButton(this)'>click</button><p>${element.dataset.name}</p>`;
-    
-    
-    
-    listItem.appendChild(element);
+    listItem.appendChild(element.childNodes[0]);
+    listItem.innerHTML += element.dataset.name;
+    listItem.appendChild(element);  
+    console.log(listItem)
+    listItem.setAttribute('onclick', "listItemToElementFromLI(this)")  
+  
     element.style.display = 'none';
     list.appendChild(listItem);
+
+
+
 }
 
-
-function listItemToElementFromButton(button) {
-    console.log("AGH");
-    let elem = button.parentNode.querySelector('.item');
-
-    elem.style.display = 'block';
-    field.appendChild(elem);
-    button.parentNode.remove();
-}
-
-function listItemToElement(item) {
-    let elem = item.querySelector('.item');
-
-    field.appendChild(elem);
-    item.remove();
+function listItemToElementFromLI(item) {
+    console.log("AGH - return to field: ", item);
+    let element = item.childNodes[2]
+    element.style.display = "block";
+    // field.appendChild(element);
+    // item.remove();
+    // item.style.display = "none";
 }

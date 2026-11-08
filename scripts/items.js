@@ -126,6 +126,11 @@ function onDrop(thing) {
         return;
     }
 
+    if (thing.classList.contains("duck") && overlaps(thing, duckStorage)) {
+        itemToList(thing, document.querySelector('#duck-list>ul'));
+        return;
+    }
+
     if (thing.classList.contains("item")) {
         let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
@@ -136,16 +141,16 @@ function onDrop(thing) {
         }
     }
 
-    if (thing.classList.contains("item") || thing.classList.contains("duck")) {
-        if (overlaps(thing, merge)){
-            MERGE_ITEMS.push(thing)
-            console.log(MERGE_ITEMS)
-        }
-        else {
-            MERGE_ITEMS = MERGE_ITEMS.filter( e => e != thing)
-            console.log(MERGE_ITEMS)
-        }
-    }
+    // if (thing.classList.contains("item") || thing.classList.contains("duck")) {
+    //     if (overlaps(thing, merge)){
+    //         MERGE_ITEMS.push(thing)
+    //         console.log(MERGE_ITEMS)
+    //     }
+    //     else {
+    //         MERGE_ITEMS = MERGE_ITEMS.filter( e => e != thing)
+    //         console.log(MERGE_ITEMS)
+    //     }
+    // }
 }
 
 function tryMerge(){
