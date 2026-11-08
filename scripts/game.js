@@ -3,14 +3,14 @@
 // - ducks in field
 // - items in inventory
 // - items in field
+// - items in pond
+// - items in merge box
 // - gamestates (time, weather, acheivements/points)
-// 
 
 let USER_DUCKS = []
 let FIELD_DUCKS = []
 let USER_ITEMS = []
 let FIELD_ITEMS = []
-// let TIME = 0
 let COUNTER = 1
 
 /**
@@ -21,12 +21,10 @@ function loadDucks() {
     let duckList = document.getElementById("duck-list");
     let listString = "<ul class='styled-list'>"
 
-    console.log("loading the following ducks: " + USER_DUCKS)
-    if (USER_DUCKS && USER_DUCKS.length>0) {
+    if (USER_DUCKS && USER_DUCKS.length > 0) {
 
         USER_DUCKS.map(duck => {
-            console.log("loading " + duck.name)
-            listString += "<li><img class='inventory-icon' src=" + duck.image + "> " + duck.name + "</li>"
+            listString += `<li><img class='inventory-icon' src='${duck.image}'>${duck.data?.name}</li>`
         })
 
         duckList.innerHTML = listString
@@ -34,6 +32,7 @@ function loadDucks() {
         duckList.innerHTML = "<p>No Ducks D:</p>"
     }
     localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
+    localStorage.setItem("counter", JSON.stringify(COUNTER))
 }
 
 /**
@@ -44,13 +43,11 @@ function loadItems() {
     let itemList = document.getElementById("item-list");
     let listString = "<ul class='styled-list'>"
 
-    console.log("loading the following ducks: " + USER_ITEMS)
-    if (USER_ITEMS && USER_ITEMS.length>0) {
+    if (USER_ITEMS && USER_ITEMS.length > 0) {
         USER_ITEMS.map(item => {
-            console.log("loading " + item.name)
-            listString += "<li><img class='inventory-icon' src=" + item.image + "> " + item.name + " - " + item.count + "</li>"
+            listString += `<li><img class='inventory-icon' src='${item.image}'>${item.data?.name} - ${item.data?.count}</li>`
         })
-        itemList.innerHTML = itemList.innerHTML + listString
+        itemList.innerHTML = listString
     } else {
         itemList.innerHTML = "<p>No items D:</p>"
     }
@@ -80,27 +77,34 @@ function resetAll() {
     COUNTER = 1
     localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
     localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
-    localStorage.setItem("count", JSON.stringify(COUNTER))
+    localStorage.setItem("counter", JSON.stringify(COUNTER))
     loadDucks()
     loadItems()
 }
 
 function newDuck(parent1, parent2) {
     let duck = {
-        name: "Duck #" + COUNTER,
-        image: "../images/duck.png",
-        status: 3,
-        id: COUNTER,
-        parent1: parent1,
-        parent2: parent2
+        classlist: "thing duck grab",
+        width: "50px",
+        height: "50px",
+        left: "0px",
+        top: "0px",
+        image: "/images/duck.png",
+        data: {
+            name: "Duck #" + COUNTER,
+            status: 3,
+            id: COUNTER,
+            parent1: parent1,
+            parent2: parent2
+        }
     }
     COUNTER++
     return duck
 }
 
-function generateNewDuck(){
+function generateNewDuck() {
     let duck = newDuck(-1, -1)
-    if (!USER_DUCKS){
+    if (!USER_DUCKS) {
         USER_DUCKS = []
     }
     USER_DUCKS.push(duck)
@@ -112,6 +116,13 @@ function generateNewDuck(){
  */
 window.addEventListener("load", (e) => {
     console.log("window loaded")
+
+    let localCounter = localStorage.getItem("counter")
+    let counter = undefined
+    if (localCounter != "undefined" && localCounter != null) {
+        counter = JSON.parse(localStorage.getItem("counter"))
+    }
+    COUNTER = counter
 
     let localDucks = localStorage.getItem("user_ducks")
     let localItems = localStorage.getItem("user_items")
@@ -133,29 +144,27 @@ window.addEventListener("load", (e) => {
         USER_DUCKS = []
         USER_DUCKS.push(newDuck(-1, -1))
         USER_DUCKS.push(newDuck(-1, -1))
-        console.log(USER_DUCKS)
     }
 
     if (USER_ITEMS == undefined) {
         console.log("no inventory, giving starter items...")
         USER_ITEMS = []
         USER_ITEMS.push({
-            name: "food",
-            image: "../images/seeds.png",
-            count: 5
+            classlist: "thing item grab",
+            width: "50px",
+            height: "50px",
+            left: "0px",
+            top: "0px",
+            image: "/images/seeds.png",
+            data: {
+                name: "Seeds",
+                count: 3
+            }
         })
-        console.log(USER_ITEMS)
     }
 
     loadDucks()
     loadItems()
-
-    let localCount = localStorage.getItem("count")
-    let count = undefined
-    if (localCount != "undefined"){
-        count = JSON.parse(localStorage.getItem("count"))
-    }
-    COUNTER = count
 });
 
 

@@ -16,7 +16,7 @@ const dragElement = (element) => {
         document.addEventListener('mousemove', elementDrag);
         document.addEventListener('mouseup', closeDragElement);
         element.style.cursor = 'grabbing';
-        element.style.zIndex = 1;
+        element.style.zIndex = 11;
     };
 
     const elementDrag = (e) => {
@@ -36,7 +36,7 @@ const dragElement = (element) => {
         document.removeEventListener('mousemove', elementDrag);
         document.removeEventListener('mouseup', closeDragElement);
         element.style.cursor = 'grab';
-        element.style.zIndex = 0;
+        element.style.zIndex = 7;
 
         onDrop(element);
     };
@@ -70,20 +70,18 @@ function tick() {
 
 // called when a [thing] is dropped
 function onDrop(thing) {
-    if (thing.classList.contains("item") && overlaps(thing, itemList)) {
+    if (thing.classList.contains("item") && overlaps(thing, itemStorage)) {
         itemToList(thing);
-        console.log("detected overlap");
         return;
     }
 
     if (thing.classList.contains("item")) {
         let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
-            if (thing.classList.contains("food")) {
+            if (thing.dataset.type == "food") {
                 near.style.width = bounds(near).width*1.5 + "px";
+                thing.remove();
             }
-
-            thing.remove();
         }
     }
 }
@@ -137,12 +135,32 @@ function bounds(e) {
 
 
 
-let duckList;
-let itemList;
+function listItemToElement(item) {
+    let elem = document.createElement('div');
+    elem.classList.add(item.classList);
+    elem.width = item.width;
+    elem.height = item.height;
+    elem.left = item.left;
+    elem.top = item.top;
+    elem.dataset = item.dataset;
+
+    let img = document.createElement('img');
+    img.src = item.image;
+    img.width = "100%";
+    img.height = "100%";
+    elem.appendChild(img);
+
+    field.appendChild(elem);
+}
+
+
+
+let duckStorage;
+let itemStorage;
 window.addEventListener("load", (e) => {
     field = document.getElementById("field");
-    duckList = document.getElementById("duck-list");
-    itemList = document.getElementById("item-list");
+    duckStorage = document.getElementById("duck-storage");
+    itemStorage = document.getElementById("item-storage");
 
     for (let grab of document.querySelectorAll(".grab")) {
         dragElement(grab);
