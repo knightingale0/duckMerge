@@ -18,7 +18,7 @@ function itemToList(element, list) {
     
     
     listItem.appendChild(element);
-    element.display = 'none';
+    element.style.display = 'none';
     list.appendChild(listItem);
 }
 
@@ -27,6 +27,7 @@ function listItemToElementFromButton(button) {
     console.log("AGH");
     let elem = button.parentNode.querySelector('.item');
 
+    elem.style.display = 'block';
     field.appendChild(elem);
     button.parentNode.remove();
 }
