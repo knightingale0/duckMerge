@@ -167,28 +167,6 @@ function onDrop(thing) {
         }
     }
 
-    if (thing.classList.contains("item") || thing.classList.contains("duck")) {
-        console.log("item dropped on merge")
-        if (overlaps(thing, mergeNode)) {
-            let size = MERGE_ITEMS.length
-            if (MERGE_ITEMS.filter(e => e != thing).length == size) {
-                MERGE_ITEMS.push(thing)
-            }
-        }
-        else {
-            MERGE_ITEMS = MERGE_ITEMS.filter(e => e != thing)
-            // merge.style.backgroundColor = "#00991200"
-        }
-        if (MERGE_ITEMS.length == 2) {
-            // needs at least one duck??
-            console.log("could merge")
-            mergeNode.style.backgroundColor = "#009911"
-            document.getElementById("merge-button").disabled = null
-        } else {
-            mergeNode.style.backgroundColor = "#9900bb"
-        }
-    }
-
     //hammer squishing things
     if (thing.dataset.name == "Hammer") {
         if (near && overlaps(thing, near)) {
@@ -201,14 +179,6 @@ function onDrop(thing) {
             }
         }
     }
-}
-
-function merge() {
-    let item1 = MERGE_ITEMS[0]
-    let item2 = MERGE_ITEMS[1]
-
-    console.log(item1)
-    console.log(item2)
 }
 
 
@@ -275,12 +245,10 @@ const TPS = 5;
 
 let duckStorage;
 let itemStorage;
-let mergeNode;
 window.addEventListener("load", (e) => {
     field = document.getElementById("field");
     duckStorage = document.getElementById("duck-storage");
     itemStorage = document.getElementById("item-storage");
-    mergeNode = document.getElementById("merge-box");
 
     for (let grab of document.querySelectorAll(".grab")) {
         dragElement(grab);

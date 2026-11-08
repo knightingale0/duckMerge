@@ -103,15 +103,6 @@ li img {
     height: 25px;
 }
 
-#merge-box {
-    width: 400px;
-    height: 150px;
-    z-index: 5;
-    background-color: #9900bb;
-    right: 200px;
-    top: 0;
-}
-
 #garbage-can {
     position: fixed;
     bottom: 20px;
