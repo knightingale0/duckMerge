@@ -64,11 +64,29 @@ function tick() {
     for (let duck of document.querySelectorAll(".duck")) {
         //duck.style.left = pxtonum(duck.style.left)+10+"px";
 
-        if (overlaps(duck, nearest(duck))) {
-            duck.style.backgroundColor = "green";
+        if (!duck.dataset.walkX && Math.random()<0.25/TPS) {
+            duck.dataset.walkX = Math.random() * (bounds(field).width-bounds(duck).width) + bounds(field).minx;
+            duck.dataset.walkY = Math.random() * (bounds(field).height-bounds(duck).height) + bounds(field).miny;
         }
-        else {
-            duck.style.backgroundColor = "yellow";
+
+        if (duck.dataset.walkX) {
+            let normX = duck.dataset.walkX - num(duck.style.left);
+            let normY = duck.dataset.walkY - num(duck.style.top);
+            let len = Math.sqrt(normX*normX + normY*normY);
+
+            normX /= len;
+            normY /= len;
+
+            normX *= Math.min(len, 50/TPS);
+            normY *= Math.min(len, 50/TPS);
+
+            duck.style.left = num(duck.style.left) + normX + "px";
+            duck.style.top = num(duck.style.top) + normY + "px";
+
+            if (Math.abs(num(duck.style.left)-duck.dataset.walkX) < 1 && Math.abs(num(duck.style.top)-duck.dataset.walkY) < 1) {
+                delete duck.dataset.walkX;
+                delete duck.dataset.walkY;
+            }
         }
     }
 
@@ -79,13 +97,13 @@ function tick() {
     }
 
     //spawn fih
-    if (Math.random() < 0.0025) {
+    if (Math.random() < 0.025/TPS) {
         let fih = document.createElement("div");
         fih.classList.add("thing");
         fih.classList.add("item");
         fih.classList.add("grab");
         fih.classList.add("fih");
-        fih.innerHTML = '<img src="images/fih.webp" width="100px">';
+        fih.innerHTML = '<img src="images/pxfih-export.png" width="100%">';
         field.appendChild(fih);
 
         const pond = document.querySelector(".pond");

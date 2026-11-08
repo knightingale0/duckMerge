@@ -79,7 +79,7 @@ function resetAll() {
 
 function newDuck(parent1, parent2) {
     let name = `Duck #${COUNTER}`
-    let imagePath = "/images/duck.png"
+    let imagePath = "images/duck.png"
     let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}"></div>`
     COUNTER++
     return duck
