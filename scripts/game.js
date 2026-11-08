@@ -146,6 +146,7 @@ window.addEventListener("load", (e) => {
         USER_ITEMS = []
         USER_ITEMS.push(newItem("Apple", "./images/apple.png", food=true))
         USER_ITEMS.push(newItem("Seeds", "./images/plant2.png"))
+        USER_ITEMS.push(newItem("Hammer", "./images/hammer.png"))
     }
 
     loadDucks()

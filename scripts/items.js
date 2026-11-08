@@ -16,6 +16,8 @@ const dragElement = (element) => {
 
         element.held = true;
         delete element.dataset.despawn;
+
+        field.appendChild(element); // puts to end (top)
     };
 
     const elementDrag = (e) => {
@@ -79,10 +81,10 @@ function tick() {
             normY *= Math.min(len, 50 / TPS);
 
             if (normX < 0) {
-                duck.style.transform = 'scaleX(-1)';
+                duck.querySelector('img').style.transform = 'scaleX(-1)';
             }
             else {
-                duck.style.transform = 'scaleX(1)';
+                duck.querySelector('img').style.transform = 'scaleX(1)';
             }
 
             duck.style.left = num(duck.style.left) + normX + "px";
@@ -166,6 +168,21 @@ function onDrop(thing) {
             document.getElementById("merge-button").disabled = null
         } else {
             mergeNode.style.backgroundColor = "#9900bb"
+        }
+    }
+
+
+    if (thing.dataset.name == "Hammer") {
+        let near = nearest(thing);
+        if (near && overlaps(thing, near)) {
+            const ogHeight = num(near.style.height);
+            near.style.transform = 'scaleY(0.5)';
+            setTimeout(() => {near.style.transform = ''}, 1500);
+
+            if (near.classList.contains('duck')) {
+                delete near.dataset.walkX;
+                delete near.dataset.walkY;
+            }
         }
     }
 }
