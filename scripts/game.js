@@ -200,8 +200,8 @@ window.addEventListener("load", (e) => {
     FIELD_DUCKS = field_ducks
     FIELD_ITEMS = field_items
 
-    renderFieldObjects(FIELD_DUCKS)
-    renderFieldObjects(FIELD_ITEMS)
+    // renderFieldObjects(FIELD_DUCKS)
+    // renderFieldObjects(FIELD_ITEMS)
 });
 
 
