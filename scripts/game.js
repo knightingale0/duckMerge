@@ -11,12 +11,10 @@ let USER_DUCKS = []
 let FIELD_DUCKS = []
 let USER_ITEMS = []
 let FIELD_ITEMS = []
+let POND_ITEMS = []
+let MERGE_ITEMS = []
 let COUNTER = 1
 
-/**
- * sets the interior of the "duck list" sidebar to the user's ducks
- * saves to local storage
- */
 function loadDucks() {
     let duckList = document.getElementById("duck-list");
     let listString = "<ul class='styled-list'>"
@@ -24,7 +22,10 @@ function loadDucks() {
     if (USER_DUCKS && USER_DUCKS.length > 0) {
 
         USER_DUCKS.map(duck => {
-            listString += `<li><img class='inventory-icon' src='${duck.image}'>${duck.data?.name}</li>`
+            let image = duck.split('"')[15]
+            let name = duck.split('"')[1]
+            let id = duck.split('"')[5]
+            listString += `<li data-id="${id}"><img class='inventory-icon' src='${image}'>${name}</li>`
         })
 
         duckList.innerHTML = listString
@@ -35,17 +36,16 @@ function loadDucks() {
     localStorage.setItem("counter", JSON.stringify(COUNTER))
 }
 
-/**
- * sets the interior of the "inventory" sidebar to the user's inventory items
- * saves to local storage
- */
 function loadItems() {
     let itemList = document.getElementById("item-list");
     let listString = "<ul class='styled-list'>"
 
     if (USER_ITEMS && USER_ITEMS.length > 0) {
         USER_ITEMS.map(item => {
-            listString += `<li><img class='inventory-icon' src='${item.image}'>${item.data?.name} - ${item.data?.count}</li>`
+            let imagePath = item.split('"')[9]
+            let name = item.split('"')[1]
+            let id = item.split('"')
+            listString += `<li><img class='inventory-icon' src='${imagePath}'>${name}</li>`
         })
         itemList.innerHTML = listString
     } else {
@@ -54,17 +54,12 @@ function loadItems() {
     localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
 }
 
-/**
- * Resets the user's inventory of items to "undefined" so it gets refilled on reload
- */
 function resetItems() {
     USER_ITEMS = []
     localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
     loadItems()
 }
-/**
- * Resets the user's inventory of ducks to "undefined" so it gets refilled on reload
- */
+
 function resetDucks() {
     USER_DUCKS = []
     localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
@@ -83,23 +78,17 @@ function resetAll() {
 }
 
 function newDuck(parent1, parent2) {
-    let duck = {
-        classlist: "thing duck grab",
-        width: "50px",
-        height: "50px",
-        left: "0px",
-        top: "0px",
-        image: "/images/duck.png",
-        data: {
-            name: "Duck #" + COUNTER,
-            status: 3,
-            id: COUNTER,
-            parent1: parent1,
-            parent2: parent2
-        }
-    }
+    let name = `Duck #${COUNTER}`
+    let imagePath = "/images/duck.png"
+    let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}"></div>`
     COUNTER++
     return duck
+}
+
+function newItem(name, image) {
+    let item = `<div data-name="${name}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7;" data-id="${COUNTER}"><img src="${image}"></div>`
+    COUNTER++
+    return item
 }
 
 function generateNewDuck() {
@@ -109,6 +98,15 @@ function generateNewDuck() {
     }
     USER_DUCKS.push(duck)
     loadDucks()
+}
+
+function generateMoreSeeds() {
+    let seeds = newItem("seeds", "./images/seeds.png")
+    if (!USER_ITEMS) {
+        USER_ITEMS = []
+    }
+    USER_ITEMS.push(seeds)
+    loadItems()
 }
 
 /**
@@ -149,18 +147,7 @@ window.addEventListener("load", (e) => {
     if (USER_ITEMS == undefined) {
         console.log("no inventory, giving starter items...")
         USER_ITEMS = []
-        USER_ITEMS.push({
-            classlist: "thing item grab",
-            width: "50px",
-            height: "50px",
-            left: "0px",
-            top: "0px",
-            image: "/images/seeds.png",
-            data: {
-                name: "Seeds",
-                count: 3
-            }
-        })
+        USER_ITEMS.push(newItem("Seeds", "./images/seeds.png"))
     }
 
     loadDucks()
