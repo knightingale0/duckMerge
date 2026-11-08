@@ -80,28 +80,35 @@ function makeEgg(){
 function newDuck(parent1, parent2) {
     let sandwichDuckChance = Math.random()*5
     let eggDuckChance = Math.random()*10
+    let mallardChance = Math.random()*10
     let name = `Duck #${COUNTER}`
     let imagePath = "images/duck.png"
+    if (mallardChance < 5){
+        imagePath = "./images/brownduckwithgreenhead.png"
+    }
     let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}" alt=${name}></div>`
     if (sandwichDuckChance < 2){
         name = "Sandwich Duck!"
         imagePath = "./images/breadduck.png"
         duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab sandwich" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}" alt=${name}></div>`
     }
-    if (eggDuckChance > 2){
+    if (eggDuckChance < 2){
         name = "Egg Duck!"
         imagePath = "./images/eggduck.png"
         duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab egg" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}" alt=${name}></div>`
     }
 
+
     COUNTER++
     return duck
 }
 
-function newItem(name, image, food) {
+function newItem(name, image, food, grows) {
     let item
     if (food) {
         item = `<div data-name="${name}" data-type="food" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
+    } else if (grows) {
+        item = `<div data-name="${name}" data-type="plant" data-growtime="60" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
     } else {
         item = `<div data-name="${name}" "" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
     }

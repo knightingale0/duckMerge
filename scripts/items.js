@@ -72,6 +72,19 @@ function tick() {
                 field.appendChild(dnew);
             }
         }
+        if (thing.dataset.growtime){
+            console.log(thing.dataset.growtime+ "- for " + thing.dataset.name)
+            thing.dataset.growtime -=1;
+            // stage at 25 - image change
+            if (thing.dataset.growTime <= 35){
+                thing.firstChild.src = "./images/plant2.png"
+            }
+            // stage at 60 - can bonk for apples
+            if (thing.dataset.growtime <= 0){
+                thing.firstChild.src = "./images/plant3.png"
+                thing.classList.add("tree")
+            }
+        }
     }
 
     for (let duck of document.querySelectorAll("#field .duck")) {
@@ -238,6 +251,33 @@ function onDrop(thing) {
 
                 near.firstChild.src = "./images/duck.png"
                 near.dataset.name = `Duck #${near.dataset.id}`
+            }
+            if (near.classList.contains('tree')) {
+
+                let appleNew = strToElem(newItem("Apple", "./images/apple.png", food = true));
+
+                field.appendChild(appleNew);
+                appleNew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
+                appleNew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
+
+                dragElement(appleNew);
+            }
+            if (near.dataset.name =='Apple') {
+
+                near.remove();
+
+                let s1 = strToElem(newItem("Seed", "./images/plant1.png"));
+                let s2 = strToElem(newItem("Seed", "./images/plant1.png"));
+
+                field.appendChild(s1);
+                field.appendChild(s2);
+                s1.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
+                s1.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
+                s2.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
+                s2.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
+
+                dragElement(s1);
+                dragElement(s2);
             }
         }
     }
