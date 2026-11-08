@@ -2,31 +2,38 @@ function itemToList(element, list) {
     console.log("item to list");
 
     let listItem = document.createElement("li");
-    listItem.innerHTML = `<p>${element.dataset.name}</p>`;
+
+    // let button = document.createElement("button");
+    // button.innerText = "click";
+    // button.onclick = 'listItemToElementFromButton(this)';
+    // // button.addEventListener('click', function(event) {
+    // //     const button = event.currentTarget; 
+    // //     listItemToElement(button.parentNode);
+    // //     console.log("asdg");
+    // // });
+    // listItem.appendChild(button);
+
+    listItem.innerHTML += `<button onclick='listItemToElementFromButton(this)'>click</button><p>${element.dataset.name}</p>`;
+    
+    
+    
     listItem.appendChild(element);
     element.display = 'none';
     list.appendChild(listItem);
-
-    element.remove();
 }
 
 
-
-
-function listItemToElement(item) {
-    let elem = document.createElement('div');
-    elem.classList = item.classList;
-    elem.width = item.width;
-    elem.height = item.height;
-    elem.left = item.left;
-    elem.top = item.top;
-    elem.dataset = item.dataset;
-
-    let img = document.createElement('img');
-    img.src = item.image;
-    img.width = "100%";
-    img.height = "100%";
-    elem.appendChild(img);
+function listItemToElementFromButton(button) {
+    console.log("AGH");
+    let elem = button.parentNode.querySelector('.item');
 
     field.appendChild(elem);
+    button.parentNode.remove();
+}
+
+function listItemToElement(item) {
+    let elem = item.querySelector('.item');
+
+    field.appendChild(elem);
+    item.remove();
 }

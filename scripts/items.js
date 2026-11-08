@@ -82,6 +82,7 @@ function tick() {
     if (Math.random() < 0.0025) {
         let fih = document.createElement("div");
         fih.classList.add("thing");
+        fih.classList.add("item");
         fih.classList.add("grab");
         fih.classList.add("fih");
         fih.innerHTML = '<img src="images/fih.webp" width="100px">';
