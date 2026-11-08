@@ -48,7 +48,7 @@ const dragElement = (element) => {
 
 
 function num(n) {
-    return Number(n.replace("px",""));
+    return Number(n.replace("px", ""));
 };
 
 function tick() {
@@ -62,21 +62,21 @@ function tick() {
     }
 
     for (let duck of document.querySelectorAll("#field .duck")) {
-        if (!duck.dataset.walkX && Math.random()<0.25/TPS) {
-            duck.dataset.walkX = Math.random() * (bounds(field).width-bounds(duck).width) + bounds(field).minx;
-            duck.dataset.walkY = Math.random() * (bounds(field).height-bounds(duck).height) + bounds(field).miny;
+        if (!duck.dataset.walkX && Math.random() < 0.25 / TPS) {
+            duck.dataset.walkX = Math.random() * (bounds(field).width - bounds(duck).width) + bounds(field).minx;
+            duck.dataset.walkY = Math.random() * (bounds(field).height - bounds(duck).height) + bounds(field).miny;
         }
 
         if (duck.dataset.walkX) {
             let normX = duck.dataset.walkX - num(duck.style.left);
             let normY = duck.dataset.walkY - num(duck.style.top);
-            let len = Math.sqrt(normX*normX + normY*normY);
+            let len = Math.sqrt(normX * normX + normY * normY);
 
             normX /= len;
             normY /= len;
 
-            normX *= Math.min(len, 50/TPS);
-            normY *= Math.min(len, 50/TPS);
+            normX *= Math.min(len, 50 / TPS);
+            normY *= Math.min(len, 50 / TPS);
 
             if (normX < 0) {
                 duck.style.transform = 'scaleX(-1)';
@@ -88,21 +88,22 @@ function tick() {
             duck.style.left = num(duck.style.left) + normX + "px";
             duck.style.top = num(duck.style.top) + normY + "px";
 
-            if (Math.abs(num(duck.style.left)-duck.dataset.walkX) < 1 && Math.abs(num(duck.style.top)-duck.dataset.walkY) < 1) {
+            if (Math.abs(num(duck.style.left) - duck.dataset.walkX) < 1 && Math.abs(num(duck.style.top) - duck.dataset.walkY) < 1) {
                 delete duck.dataset.walkX;
                 delete duck.dataset.walkY;
             }
         }
     }
 
-    for (let thing of document.querySelectorAll("#field .thing")) {
+    for (let thing of document.querySelectorAll("#field .thing:not(.controls)")) {
         if (thing.held) continue;
-        thing.style.left = Math.max(bounds(field).minx, Math.min(num(thing.style.left), bounds(field).maxx - bounds(thing).width))+"px";
-        thing.style.top = Math.max(bounds(field).miny, Math.min(num(thing.style.top), bounds(field).maxy - bounds(thing).height))+"px";
+        thing.style.left = Math.max(bounds(field).minx, Math.min(num(thing.style.left), bounds(field).maxx - bounds(thing).width)) + "px";
+        thing.style.top = Math.max(bounds(field).miny, Math.min(num(thing.style.top), bounds(field).maxy - bounds(thing).height)) + "px";
     }
 
+
     //spawn fih
-    if (Math.random() < 0.025/TPS) {
+    if (Math.random() < 0.025 / TPS) {
         let fih = document.createElement("div");
         fih.classList.add("thing");
         fih.classList.add("item");
@@ -121,7 +122,7 @@ function tick() {
 
         dragElement(fih);
     }
-    
+
 }
 
 // called when a [thing] is dropped
@@ -140,7 +141,7 @@ function onDrop(thing) {
         let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
             if (thing.dataset.type == "food") {
-                near.style.width = bounds(near).width*1.5 + "px";
+                near.style.width = bounds(near).width * 1.5 + "px";
                 thing.remove();
             }
         }
@@ -158,8 +159,8 @@ function onDrop(thing) {
     // }
 }
 
-function tryMerge(){
-    if (MERGE_ITEMS.length == 2){
+function tryMerge() {
+    if (MERGE_ITEMS.length == 2) {
         // needs at least one duck??
         console.log("could merge")
     }
@@ -178,7 +179,7 @@ function nearest(to) {
     for (let thing of document.querySelectorAll("#field .thing")) {
         if (thing == to) continue;
 
-        let d = Math.sqrt(Math.pow(midx-bounds(thing).midx,2) + Math.pow(midy-bounds(thing).midy,2));
+        let d = Math.sqrt(Math.pow(midx - bounds(thing).midx, 2) + Math.pow(midy - bounds(thing).midy, 2));
 
         if (d < bestDist) {
             out = thing;
@@ -190,7 +191,7 @@ function nearest(to) {
 };
 
 //do two things overlap
-function overlaps(a,b) {
+function overlaps(a, b) {
     return (!(
         (bounds(a).minx > bounds(b).maxx || bounds(b).minx > bounds(a).maxx) ||
         (bounds(a).miny > bounds(b).maxy || bounds(b).miny > bounds(a).maxy)
@@ -202,13 +203,13 @@ let field;
 function bounds(e) {
     return {
         minx: e.getBoundingClientRect().x,
-        maxx: e.getBoundingClientRect().x+e.getBoundingClientRect().width,
+        maxx: e.getBoundingClientRect().x + e.getBoundingClientRect().width,
         miny: e.getBoundingClientRect().y,
-        maxy: e.getBoundingClientRect().y+e.getBoundingClientRect().height,
+        maxy: e.getBoundingClientRect().y + e.getBoundingClientRect().height,
         width: e.getBoundingClientRect().width,
         height: e.getBoundingClientRect().height,
-        midx: e.getBoundingClientRect().x+e.getBoundingClientRect().width*0.5,
-        midy: e.getBoundingClientRect().y+e.getBoundingClientRect().height*0.5
+        midx: e.getBoundingClientRect().x + e.getBoundingClientRect().width * 0.5,
+        midy: e.getBoundingClientRect().y + e.getBoundingClientRect().height * 0.5
     };
 }
 

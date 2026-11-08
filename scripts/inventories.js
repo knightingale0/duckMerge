@@ -14,7 +14,7 @@ function itemToList(element, list) {
 
 function listItemToElementFromLI(item) {
     console.log("AGH - return to field: ", item);
-    let element = item.querySelector(".thing");
+    let element = item.querySelector(".thing:not(.controls)");
     element.style.display = "block";
     field.appendChild(element);
     item.remove();
