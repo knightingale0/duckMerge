@@ -11,38 +11,41 @@ let FIELD_DUCKS = []
 let USER_ITEMS = []
 let FIELD_ITEMS = []
 // let TIME = 0
-let COUNTER = 0
+let COUNTER = 1
 
 /**
  * sets the interior of the "duck list" sidebar to the user's ducks
+ * saves to local storage
  */
 function loadDucks() {
     let duckList = document.getElementById("duck-list");
     let listString = "<ul class='styled-list'>"
 
     console.log("loading the following ducks: " + USER_DUCKS)
-    if (USER_DUCKS) {
+    if (USER_DUCKS && USER_DUCKS.length>0) {
 
         USER_DUCKS.map(duck => {
             console.log("loading " + duck.name)
             listString += "<li><img class='inventory-icon' src=" + duck.image + "> " + duck.name + "</li>"
         })
 
-        duckList.innerHTML = duckList.innerHTML + listString
+        duckList.innerHTML = listString
     } else {
         duckList.innerHTML = "<p>No Ducks D:</p>"
     }
+    localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
 }
 
 /**
  * sets the interior of the "inventory" sidebar to the user's inventory items
+ * saves to local storage
  */
 function loadItems() {
-    let itemList = document.getElementById("items-list");
+    let itemList = document.getElementById("item-list");
     let listString = "<ul class='styled-list'>"
 
     console.log("loading the following ducks: " + USER_ITEMS)
-    if (USER_ITEMS) {
+    if (USER_ITEMS && USER_ITEMS.length>0) {
         USER_ITEMS.map(item => {
             console.log("loading " + item.name)
             listString += "<li><img class='inventory-icon' src=" + item.image + "> " + item.name + " - " + item.count + "</li>"
@@ -51,13 +54,14 @@ function loadItems() {
     } else {
         itemList.innerHTML = "<p>No items D:</p>"
     }
+    localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
 }
 
 /**
  * Resets the user's inventory of items to "undefined" so it gets refilled on reload
  */
 function resetItems() {
-    USER_ITEMS = undefined
+    USER_ITEMS = []
     localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
     loadItems()
 }
@@ -65,9 +69,20 @@ function resetItems() {
  * Resets the user's inventory of ducks to "undefined" so it gets refilled on reload
  */
 function resetDucks() {
-    USER_DUCKS = undefined
+    USER_DUCKS = []
     localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
     loadDucks()
+}
+
+function resetAll() {
+    USER_ITEMS = undefined
+    USER_DUCKS = undefined
+    COUNTER = 1
+    localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
+    localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
+    localStorage.setItem("count", JSON.stringify(COUNTER))
+    loadDucks()
+    loadItems()
 }
 
 function newDuck(parent1, parent2) {
@@ -81,6 +96,15 @@ function newDuck(parent1, parent2) {
     }
     COUNTER++
     return duck
+}
+
+function generateNewDuck(){
+    let duck = newDuck(-1, -1)
+    if (!USER_DUCKS){
+        USER_DUCKS = []
+    }
+    USER_DUCKS.push(duck)
+    loadDucks()
 }
 
 /**
@@ -125,6 +149,13 @@ window.addEventListener("load", (e) => {
 
     loadDucks()
     loadItems()
+
+    let localCount = localStorage.getItem("count")
+    let count = undefined
+    if (localCount != "undefined"){
+        count = JSON.parse(localStorage.getItem("count"))
+    }
+    COUNTER = count
 });
 
 

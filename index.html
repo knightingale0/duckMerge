@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="style.css">
         <script src="scripts/game.js"></script></script>
         <script src="scripts/items.js"></script></script>
+        <script src="scripts/inventories.js"></script></script>
     </head>
 
     <body>
@@ -18,16 +19,24 @@
                     <div class="thing duck grab"><img src="images/duck.png" width="100%"></div>
                     <div class="thing item grab food" data-food="apple">apple</div>
                     <div class="thing item grab">not food</div>
-                    <div class="thing pond" style="left: 10%; top: 60%"><img src="images/pond-1-min.jpeg" width="100%" height="100%"></div>
+                    <div class="thing pond" style="left: 10%; top: 60%"><img src="images/pond-1-min.png" width="100%" height="100%"></div>
+                    <button onclick="resetAll()">Reset State</button>
                 </div>
                 <div id="sidebar">
-                    <div id="duck-list">
+                    <div id="duck-storage">
                         Ducks
-                        <button class="reset" onclick="resetDucks()">reset</button>
+                        <button class="reset" onclick="resetDucks()">clear</button>
+                        <button onclick="generateNewDuck()">New Duck</button>
+                        <div id="duck-list">
+
+                        </div>
                     </div>
-                    <div id="items-list">
+                    <div id="item-storage">
                         Food and Inventory
-                        <button class="reset" onclick="resetItems()">reset</button>
+                        <button class="reset" onclick="resetItems()">clear</button>
+                        <div id="item-list">
+
+                        </div>
                     </div>
                 </div>
             </div>

@@ -70,8 +70,10 @@ function tick() {
 
 // called when a [thing] is dropped
 function onDrop(thing) {
-    if (overlaps(thing, nearest(thing))) {
-        
+    if (thing.classList.contains("item") && overlaps(thing, itemList)) {
+        itemToList(thing);
+        console.log("detected overlap");
+        return;
     }
 
     if (thing.classList.contains("item")) {
@@ -133,8 +135,15 @@ function bounds(e) {
     };
 }
 
+
+
+let duckList;
+let itemList;
 window.addEventListener("load", (e) => {
     field = document.getElementById("field");
+    duckList = document.getElementById("duck-list");
+    itemList = document.getElementById("item-list");
+
     for (let grab of document.querySelectorAll(".grab")) {
         dragElement(grab);
     }

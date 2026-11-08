@@ -30,13 +30,13 @@ footer {
     flex-direction: column;
 }
 
-#duck-list {
+#duck-storage {
     background-color: rgb(171, 162, 162);
     width: 100%;
     height: 40%;
 }
 
-#inventory {
+#item-storage {
     background-color: rgb(74, 68, 238);
     width: 100%;
     height: 60%;
