@@ -93,6 +93,7 @@ function tick() {
         fih.style.top = bounds(pond).miny + Math.random() * (bounds(pond).height - bounds(fih).height) + "px";
 
         fih.dataset.despawn = 5 * TPS;
+        fih.dataset.name = "FIH";
 
         dragElement(fih);
     }
@@ -102,7 +103,7 @@ function tick() {
 // called when a [thing] is dropped
 function onDrop(thing) {
     if (thing.classList.contains("item") && overlaps(thing, itemStorage)) {
-        itemToList(thing);
+        itemToList(thing, document.querySelector('#item-list>ul'));
         return;
     }
 

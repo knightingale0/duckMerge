@@ -1,12 +1,11 @@
-function itemToList(element) {
+function itemToList(element, list) {
     console.log("item to list");
 
-    let classNameString = element.className
-    let top = element.style.top
-    let left = element.style.left
-
-    let elem = element.outerHTML
-
+    let listItem = document.createElement("li");
+    listItem.innerHTML = `<p>${element.dataset.name}</p>`;
+    listItem.appendChild(element);
+    element.display = 'none';
+    list.appendChild(listItem);
 
     element.remove();
 }
@@ -16,7 +15,7 @@ function itemToList(element) {
 
 function listItemToElement(item) {
     let elem = document.createElement('div');
-    elem.classList.add(item.classList);
+    elem.classList = item.classList;
     elem.width = item.width;
     elem.height = item.height;
     elem.left = item.left;
