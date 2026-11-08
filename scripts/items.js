@@ -147,23 +147,35 @@ function onDrop(thing) {
         }
     }
 
-    // if (thing.classList.contains("item") || thing.classList.contains("duck")) {
-    //     if (overlaps(thing, merge)){
-    //         MERGE_ITEMS.push(thing)
-    //         console.log(MERGE_ITEMS)
-    //     }
-    //     else {
-    //         MERGE_ITEMS = MERGE_ITEMS.filter( e => e != thing)
-    //         console.log(MERGE_ITEMS)
-    //     }
-    // }
+    if (thing.classList.contains("item") || thing.classList.contains("duck")) {
+        console.log("item dropped on merge")
+        if (overlaps(thing, merge)) {
+            let size = MERGE_ITEMS.length
+            if (MERGE_ITEMS.filter(e => e != thing).length == size) {
+                MERGE_ITEMS.push(thing)
+            }
+        }
+        else {
+            MERGE_ITEMS = MERGE_ITEMS.filter(e => e != thing)
+            // merge.style.backgroundColor = "#00991200"
+        }
+        if (MERGE_ITEMS.length == 2) {
+            // needs at least one duck??
+            console.log("could merge")
+            merge.style.backgroundColor = "#009911"
+            document.getElementById("merge-button").disabled = null
+        } else {
+            merge.style.backgroundColor = "#9900bb"
+        }
+    }
 }
 
-function tryMerge() {
-    if (MERGE_ITEMS.length == 2) {
-        // needs at least one duck??
-        console.log("could merge")
-    }
+function merge() {
+    let item1 = MERGE_ITEMS[0]
+    let item2 = MERGE_ITEMS[1]
+
+    console.log(item1)
+    console.log(item2)
 }
 
 
@@ -219,6 +231,7 @@ const TPS = 5;
 
 let duckStorage;
 let itemStorage;
+let merge;
 window.addEventListener("load", (e) => {
     field = document.getElementById("field");
     duckStorage = document.getElementById("duck-storage");
