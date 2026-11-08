@@ -24,7 +24,8 @@ function loadDucks() {
         USER_DUCKS.map(duck => {
             let image = duck.split('"')[15]
             let name = duck.split('"')[1]
-            listString += `<li><img class='inventory-icon' src='${image}'>${name}</li>`
+            let id = duck.split('"')[5]
+            listString += `<li data-id="${id}"><img class='inventory-icon' src='${image}'>${name}</li>`
         })
 
         duckList.innerHTML = listString
@@ -41,8 +42,9 @@ function loadItems() {
 
     if (USER_ITEMS && USER_ITEMS.length > 0) {
         USER_ITEMS.map(item => {
-            let imagePath = item.split('"')[7]
+            let imagePath = item.split('"')[9]
             let name = item.split('"')[1]
+            let id = item.split('"')
             listString += `<li><img class='inventory-icon' src='${imagePath}'>${name}</li>`
         })
         itemList.innerHTML = listString
@@ -84,7 +86,9 @@ function newDuck(parent1, parent2) {
 }
 
 function newItem(name, image) {
-    return `<div data-name="${name}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${image}"></div>`
+    let item = `<div data-name="${name}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7;" data-id="${COUNTER}"><img src="${image}"></div>`
+    COUNTER++
+    return item
 }
 
 function generateNewDuck() {

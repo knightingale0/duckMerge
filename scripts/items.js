@@ -85,6 +85,24 @@ function onDrop(thing) {
             }
         }
     }
+
+    if (thing.classList.contains("item") || thing.classList.contains("duck")) {
+        if (overlaps(thing, merge)){
+            MERGE_ITEMS.push(thing)
+            console.log(MERGE_ITEMS)
+        }
+        else {
+            MERGE_ITEMS = MERGE_ITEMS.filter( e => e != thing)
+            console.log(MERGE_ITEMS)
+        }
+    }
+}
+
+function tryMerge(){
+    if (MERGE_ITEMS.length == 2){
+        // needs at least one duck??
+        console.log("could merge")
+    }
 }
 
 
@@ -162,6 +180,7 @@ window.addEventListener("load", (e) => {
     field = document.getElementById("field");
     duckStorage = document.getElementById("duck-storage");
     itemStorage = document.getElementById("item-storage");
+    merge = document.getElementById("merge-box");
 
     for (let grab of document.querySelectorAll(".grab")) {
         dragElement(grab);
