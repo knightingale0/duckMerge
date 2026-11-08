@@ -25,7 +25,7 @@ function loadDucks() {
             let image = duck.split('"')[15]
             let name = duck.split('"')[1]
             let id = duck.split('"')[5]
-            listString += `<li data-id="${id}"><img class='inventory-icon' src='${image}'>${name}</li>`
+            listString += `<li data-id="${id}" onclick="listItemToElementFromLI(this)"><img src='${image}'>${name}${duck}</li>`
         })
 
         duckList.innerHTML = listString
@@ -45,7 +45,7 @@ function loadItems() {
             let imagePath = item.split('"')[9]
             let name = item.split('"')[1]
             let id = item.split('"')
-            listString += `<li><img class='inventory-icon' src='${imagePath}'>${name}</li>`
+            listString += `<li onclick="listItemToElementFromLI(this)"><img src='${imagePath}'>${name}${item}</li>`
         })
         itemList.innerHTML = listString
     } else {
@@ -80,13 +80,13 @@ function resetAll() {
 function newDuck(parent1, parent2) {
     let name = `Duck #${COUNTER}`
     let imagePath = "/images/duck.png"
-    let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}"></div>`
+    let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'"><img src="${imagePath}" width="100%"></div>`
     COUNTER++
     return duck
 }
 
 function newItem(name, image) {
-    let item = `<div data-name="${name}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7;" data-id="${COUNTER}"><img src="${image}"></div>`
+    let item = `<div data-name="${name}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
     COUNTER++
     return item
 }

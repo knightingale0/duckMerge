@@ -62,8 +62,6 @@ function tick() {
     }
 
     for (let duck of document.querySelectorAll(".duck")) {
-        //duck.style.left = pxtonum(duck.style.left)+10+"px";
-
         if (overlaps(duck, nearest(duck))) {
             duck.style.backgroundColor = "green";
         }
@@ -123,16 +121,16 @@ function onDrop(thing) {
         }
     }
 
-    if (thing.classList.contains("item") || thing.classList.contains("duck")) {
-        if (overlaps(thing, merge)){
-            MERGE_ITEMS.push(thing)
-            console.log(MERGE_ITEMS)
-        }
-        else {
-            MERGE_ITEMS = MERGE_ITEMS.filter( e => e != thing)
-            console.log(MERGE_ITEMS)
-        }
-    }
+    // if (thing.classList.contains("item") || thing.classList.contains("duck")) {
+    //     if (overlaps(thing, merge)){
+    //         MERGE_ITEMS.push(thing)
+    //         console.log(MERGE_ITEMS)
+    //     }
+    //     else {
+    //         MERGE_ITEMS = MERGE_ITEMS.filter( e => e != thing)
+    //         console.log(MERGE_ITEMS)
+    //     }
+    // }
 }
 
 function tryMerge(){

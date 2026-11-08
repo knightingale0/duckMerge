@@ -107,4 +107,10 @@ li {
     padding: 3px;
     margin: 10px;
     background-color:coral;
+    cursor: grab;
+}
+
+li img {
+    width: 25px;
+    height: 25px;
 }

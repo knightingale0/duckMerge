@@ -2,31 +2,25 @@ function itemToList(element, list) {
     console.log("item to list", element);
 
     let listItem = document.createElement("li");
-    let image = element.childNodes[0]
-    image.className = "inventory-icon"
-    console.log(image)
 
-    listItem.appendChild(image)
-
-    listItem.innerHTML += `<button onclick='listItemToElementFromButton(this)'>click</button>${element.dataset.name}`;
-    
-    listItem.appendChild(element);
-    console.log()
+    listItem.appendChild(element.childNodes[0]);
+    listItem.innerHTML += element.dataset.name;
+    listItem.appendChild(element);  
+    console.log(listItem)
+    listItem.setAttribute('onclick', "listItemToElementFromLI(this)")  
+  
     element.style.display = 'none';
     list.appendChild(listItem);
+
+
+
 }
 
-function listItemToElementFromButton(button) {
-    console.log("AGH");
-    let elem = button.parentNode.querySelector('.thing');
-
-    elem.style.display = 'block';
-    field.appendChild(elem);
-    button.parentNode.remove();
+function listItemToElementFromLI(item) {
+    console.log("AGH - return to field: ", item);
+    let element = item.childNodes[2]
+    element.style.display = "block";
+    // field.appendChild(element);
+    // item.remove();
+    // item.style.display = "none";
 }
-
-window.addEventListener("load", (e) => {
-
-    // add an event listener so li elements in the inventory, when clicked, do the move thing
-
-})
