@@ -7,6 +7,5 @@ function itemToList(element) {
 
     let elem = element.outerHTML
 
-
     element.remove();
 }
