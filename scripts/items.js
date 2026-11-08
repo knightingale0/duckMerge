@@ -119,7 +119,7 @@ function tick() {
     //spawn fih
     if (Math.random() < 0.05 / TPS) {
         let fih = document.createElement("div");
-        fih.className = "thing item grab fih food";
+        fih.className = "thing item grab fih";
         fih.innerHTML = '<img src="images/fih.png" width="100%">';
         field.appendChild(fih);
 
@@ -131,6 +131,7 @@ function tick() {
 
         fih.dataset.despawn = 5 * TPS;
         fih.dataset.name = "FIH";
+        fih.dataset.type = "food";
 
         dragElement(fih);
     }
