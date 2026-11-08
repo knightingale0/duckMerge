@@ -6,83 +6,115 @@ let FIELD_ITEMS = []
 let POND_ITEMS = []
 let MERGE_ITEMS = []
 // save gamestates (time, weather, acheivements/points)
-let COUNTER = 1
+let COUNTER = 0
 
-function loadDucks() {
-    let duckList = document.getElementById("duck-list");
-    let listString = "<ul class='styled-list'>"
+function loadInventory(listID, savedItems, kind) {
 
-    if (USER_DUCKS && USER_DUCKS.length > 0) {
+    let itemList = document.querySelector(listID);
+    itemList.replaceChildren();
 
-        USER_DUCKS.map(duck => {
-            let image = duck.split('"')[15]
-            let name = duck.split('"')[1]
-            let id = duck.split('"')[5]
-            listString += `<li data-id="${id}" onclick="listItemToElementFromLI(this)"><img src='${image}'>${name}${duck}</li>`
-        })
-
-        duckList.innerHTML = listString
-    } else {
-        duckList.innerHTML = "<p>No Ducks D:</p>"
+    if (!savedItems.length) {
+        itemList.textContent = kind === "duck" ? "No Ducks D:" : "No items D:";
+        return;
     }
-    localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
-    localStorage.setItem("counter", JSON.stringify(COUNTER))
+
+    let ul = document.createElement("ul");
+    ul.className = "styled-list";
+
+    for (let item of savedItems) {
+        let li = document.createElement("li");
+        li.dataset.id = item.id;
+
+        let img = document.createElement("img");
+        img.src = item.image;
+
+        li.append(img, document.createTextNode(item.name));
+
+        li.addEventListener("click", () => {
+            listItemToElement(item.id, kind);
+        });
+
+        ul.appendChild(li);
+    }
+
+    itemList.appendChild(ul);
 }
 
-function loadItems() {
-    let itemList = document.getElementById("item-list");
-    let listString = "<ul class='styled-list'>"
+function renderFieldObjects(savedItems){
 
-    if (USER_ITEMS && USER_ITEMS.length > 0) {
-        USER_ITEMS.map(item => {
-            let imagePath = item.split('"')[11]
-            let name = item.split('"')[1]
-            listString += `<li onclick="listItemToElementFromLI(this)"><img src='${imagePath}'>${name}${item}</li>`
-        })
-        itemList.innerHTML = listString
-    } else {
-        itemList.innerHTML = "<p>No items D:</p>"
+    for (let item of savedItems) {
+        let div = document.createElement("div");
+        div.className = "";
+        for (let name of item.classes){
+            div.className += " " + name
+        }
+
+        div.dataset.id = item.id;
+        div.dataset.name = item.name;
+
+        let img = document.createElement("img");
+        img.src = item.image;
+
+        div.appendChild(img);
+        field.appendChild(div);
     }
-    localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
+
 }
 
 function resetItems() {
     USER_ITEMS = []
     localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
-    loadItems()
+    save()
+    loadInventory("#item-list", USER_ITEMS, "item")
 }
 
 function resetDucks() {
     USER_DUCKS = []
     localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
-    loadDucks()
+    save()
+    loadInventory("#duck-list", USER_DUCKS, "duck")
 }
 
 function resetAll() {
-    USER_ITEMS = undefined
-    USER_DUCKS = undefined
+    USER_ITEMS = []
+    USER_DUCKS = []
     COUNTER = 1
-    localStorage.setItem("user_items", JSON.stringify(USER_ITEMS))
-    localStorage.setItem("user_ducks", JSON.stringify(USER_DUCKS))
-    localStorage.setItem("counter", JSON.stringify(COUNTER))
-    loadDucks()
-    loadItems()
+    save()
+    loadInventory("#duck-list", USER_DUCKS, "duck")
+    loadInventory("#item-list", USER_ITEMS, "item")
 }
 
 function newDuck(parent1, parent2) {
     let name = `Duck #${COUNTER}`
     let imagePath = "images/duck.png"
-    let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}"></div>`
+    let duck = {
+        "id": COUNTER,
+        "name": name,
+        "image": imagePath,
+        "status": 3,
+        "parent1": parent1,
+        "parent2": parent2,
+        "classes": ["thing", "duck", "grab"],
+        "top": 0,
+        "left": 0,
+        "z-index": 7
+    }
     COUNTER++
     return duck
 }
 
-function newItem(name, image, food) {
-    let item
+function newItem(name, imagePath, food) {
+    let item = {
+        "id": COUNTER,
+        "name": name,
+        "image": imagePath,
+        "classes": ["thing", "item", "grab"],
+        "top": 0,
+        "left": 0,
+        "z-index": 7
+    }
     if (food) {
-        item = `<div data-name="${name}" data-type="food" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
-    } else {
-        item = `<div data-name="${name}" "" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
+        item.classes.push("food");
     }
     COUNTER++
     return item
@@ -94,7 +126,8 @@ function generateNewDuck() {
         USER_DUCKS = []
     }
     USER_DUCKS.push(duck)
-    loadDucks()
+    save()
+    loadInventory("#duck-list", USER_DUCKS, "duck")
 }
 
 function generateMoreSeeds() {
@@ -103,7 +136,8 @@ function generateMoreSeeds() {
         USER_ITEMS = []
     }
     USER_ITEMS.push(seeds)
-    loadItems()
+    save()
+    loadInventory("#item-list", USER_ITEMS, "item")
 }
 
 /**
@@ -113,7 +147,7 @@ window.addEventListener("load", (e) => {
     console.log("window loaded")
 
     let localCounter = localStorage.getItem("counter")
-    let counter = undefined
+    let counter = 0
     if (localCounter != "undefined" && localCounter != null) {
         counter = JSON.parse(localStorage.getItem("counter"))
     }
@@ -122,11 +156,11 @@ window.addEventListener("load", (e) => {
     let localDucks = localStorage.getItem("user_ducks")
     let localItems = localStorage.getItem("user_items")
 
-    let user_ducks = undefined
+    let user_ducks = []
     if (localDucks != "undefined") {
         user_ducks = JSON.parse(localStorage.getItem("user_ducks"))
     }
-    let user_items = undefined
+    let user_items = []
     if (localItems != "undefined") {
         user_items = JSON.parse(localStorage.getItem("user_items"))
     }
@@ -134,22 +168,40 @@ window.addEventListener("load", (e) => {
     USER_DUCKS = user_ducks
     USER_ITEMS = user_items
 
-    if (USER_DUCKS == undefined) {
+    if (USER_DUCKS == []) {
         console.log("no ducks, giving starter ducks...")
         USER_DUCKS = []
         USER_DUCKS.push(newDuck(-1, -1))
         USER_DUCKS.push(newDuck(-1, -1))
     }
 
-    if (USER_ITEMS == undefined) {
+    if (USER_ITEMS == []) {
         console.log("no inventory, giving starter items...")
         USER_ITEMS = []
-        USER_ITEMS.push(newItem("Apple", "./images/apple.png", food=true))
+        USER_ITEMS.push(newItem("Apple", "./images/apple.png", food = true))
         USER_ITEMS.push(newItem("Seeds", "./images/plant2.png"))
     }
 
-    loadDucks()
-    loadItems()
+    loadInventory("#duck-list", USER_DUCKS, "duck")
+    loadInventory("#item-list", USER_ITEMS, "item")
+
+    let localFieldDucks = localStorage.getItem("field_ducks")
+    let localFieldItems = localStorage.getItem("field_items")
+
+    let field_ducks = []
+    if (localFieldDucks != "undefined") {
+        user_ducks = JSON.parse(localStorage.getItem("field_ducks"))
+    }
+    let field_items = []
+    if (localFieldItems != "undefined") {
+        field_items = JSON.parse(localStorage.getItem("field_items"))
+    }
+
+    FIELD_DUCKS = field_ducks
+    FIELD_ITEMS = field_items
+
+    renderFieldObjects(FIELD_DUCKS)
+    renderFieldObjects(FIELD_ITEMS)
 });
 
 
