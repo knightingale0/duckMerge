@@ -81,7 +81,9 @@ function tick() {
             }
             // stage at 60 - can bonk for apples
             if (thing.dataset.growtime <= 0){
-                thing.firstChild.src = "./images/plant3.png"
+                thing.firstChild.src = "./images/tree.png"
+                thing.style.width = "192px";
+                thing.style.height = "256px";
                 thing.classList.add("tree")
             }
         }
@@ -266,8 +268,8 @@ function onDrop(thing) {
 
                 near.remove();
 
-                let s1 = strToElem(newItem("Seed", "./images/plant1.png"));
-                let s2 = strToElem(newItem("Seed", "./images/plant1.png"));
+                let s1 = strToElem(newItem("Seed", "./images/plant1.png", false, true));
+                let s2 = strToElem(newItem("Seed", "./images/plant1.png", false, true));
 
                 field.appendChild(s1);
                 field.appendChild(s2);

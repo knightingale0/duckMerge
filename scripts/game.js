@@ -172,7 +172,7 @@ window.addEventListener("load", (e) => {
     if (USER_ITEMS == undefined) {
         USER_ITEMS = []
         USER_ITEMS.push(newItem("Apple", "./images/apple.png", food=true))
-        USER_ITEMS.push(newItem("Seeds", "./images/plant2.png"))
+        USER_ITEMS.push(newItem("Seed", "./images/plant2.png", false, true))
         USER_ITEMS.push(newItem("Hammer", "./images/hammer.png"))
     }
 
