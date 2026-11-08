@@ -6,17 +6,15 @@ const dragElement = (element) => {
     const dragMouseDown = (e) => {
         e.preventDefault(); // Prevents default browser text selection
 
-        // Calculate the cursor position relative to the element's edges
-        // This stops the element from "snapping" its top-left corner to your cursor
         shiftX = e.clientX - element.getBoundingClientRect().left;
         shiftY = e.clientY - element.getBoundingClientRect().top;
 
-        // Attach listeners to the 'document' so dragging continues smoothly 
-        // even if the user accidentally moves the mouse outside the element boundaries
         document.addEventListener('mousemove', elementDrag);
         document.addEventListener('mouseup', closeDragElement);
         element.style.cursor = 'grabbing';
-        element.style.zIndex = 11;
+        element.style.zIndex = 15;
+
+        element.held = true;
     };
 
     const elementDrag = (e) => {
@@ -37,6 +35,8 @@ const dragElement = (element) => {
         document.removeEventListener('mouseup', closeDragElement);
         element.style.cursor = 'grab';
         element.style.zIndex = 7;
+
+        element.held = false;
 
         onDrop(element);
     };
@@ -63,6 +63,7 @@ function tick() {
     }
 
     for (let thing of document.querySelectorAll(".thing")) {
+        if (thing.held) continue;
         thing.style.left = Math.max(bounds(field).minx, Math.min(num(thing.style.left), bounds(field).maxx - bounds(thing).width))+"px";
         thing.style.top = Math.max(bounds(field).miny, Math.min(num(thing.style.top), bounds(field).maxy - bounds(thing).height))+"px";
     }
