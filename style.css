@@ -23,7 +23,8 @@ footer {
 }
 
 #field {
-    background-color: rgb(107, 146, 48);
+    background-image: url('./images/grass.png');
+    background-repeat: repeat;
     z-index: 6;
 }
 
