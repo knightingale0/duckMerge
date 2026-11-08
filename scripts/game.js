@@ -11,6 +11,7 @@ let FIELD_DUCKS = []
 let USER_ITEMS = []
 let FIELD_ITEMS = []
 // let TIME = 0
+let COUNTER = 0
 
 /**
  * sets the interior of the "duck list" sidebar to the user's ducks
@@ -69,6 +70,19 @@ function resetDucks() {
     loadDucks()
 }
 
+function newDuck(parent1, parent2) {
+    let duck = {
+        name: "Duck #" + COUNTER,
+        image: "../images/duck.png",
+        status: 3,
+        id: COUNTER,
+        parent1: parent1,
+        parent2: parent2
+    }
+    COUNTER++
+    return duck
+}
+
 /**
  * Code that runs on page loading
  */
@@ -93,16 +107,8 @@ window.addEventListener("load", (e) => {
     if (USER_DUCKS == undefined) {
         console.log("no ducks, giving starter ducks...")
         USER_DUCKS = []
-        USER_DUCKS.push({
-            name: "Duck",
-            image: "../images/duck.png",
-            status: 5
-        })
-        USER_DUCKS.push({
-            name: "Duckling",
-            image: "../images/duck.png",
-            status: 3
-        })
+        USER_DUCKS.push(newDuck(-1, -1))
+        USER_DUCKS.push(newDuck(-1, -1))
         console.log(USER_DUCKS)
     }
 
@@ -119,7 +125,6 @@ window.addEventListener("load", (e) => {
 
     loadDucks()
     loadItems()
-
 });
 
 

@@ -46,8 +46,8 @@ const dragElement = (element) => {
 };
 
 
-function pxtonum(num) {
-    return Number(num.replace("px",""));
+function num(n) {
+    return Number(n.replace("px",""));
 };
 
 function tick() {
@@ -63,8 +63,8 @@ function tick() {
     }
 
     for (let thing of document.querySelectorAll(".thing")) {
-        thing.style.left = Math.max(bounds(field).minx, Math.min(pxtonum(thing.style.left), bounds(field).maxx - bounds(thing).width))+"px";
-        thing.style.top = Math.max(bounds(field).miny, Math.min(pxtonum(thing.style.top), bounds(field).maxy - bounds(thing).height))+"px";
+        thing.style.left = Math.max(bounds(field).minx, Math.min(num(thing.style.left), bounds(field).maxx - bounds(thing).width))+"px";
+        thing.style.top = Math.max(bounds(field).miny, Math.min(num(thing.style.top), bounds(field).maxy - bounds(thing).height))+"px";
     }
 }
 
@@ -77,6 +77,10 @@ function onDrop(thing) {
     if (thing.classList.contains("item")) {
         let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
+            if (thing.classList.contains("food")) {
+                near.style.width = bounds(near).width*1.5 + "px";
+            }
+
             thing.remove();
         }
     }

@@ -65,6 +65,15 @@ footer {
     background-color: red;
 }
 
+.pond {
+    width: 300px;
+    height: 200px;
+}
+
+
+.thing {
+    position: absolute;
+}
 
 .grab {
     position: absolute;
