@@ -108,7 +108,7 @@ function tick() {
     //spawn fih
     if (Math.random() < 0.05 / TPS) {
         let fih = document.createElement("div");
-        fih.className = "thing item grab fih";
+        fih.className = "thing item grab fih food";
         fih.innerHTML = '<img src="images/fih.png" width="100%">';
         field.appendChild(fih);
 
