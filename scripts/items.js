@@ -15,6 +15,7 @@ const dragElement = (element) => {
         element.style.zIndex = 15;
 
         element.held = true;
+        delete element.dataset.despawn;
     };
 
     const elementDrag = (e) => {
@@ -51,6 +52,15 @@ function num(n) {
 };
 
 function tick() {
+    for (let thing of document.querySelectorAll(".thing")) {
+        if (thing.dataset.despawn) {
+            thing.dataset.despawn -= 1;
+            if (thing.dataset.despawn <= 0) {
+                thing.remove();
+            }
+        }
+    }
+
     for (let duck of document.querySelectorAll(".duck")) {
         //duck.style.left = pxtonum(duck.style.left)+10+"px";
 
@@ -67,12 +77,33 @@ function tick() {
         thing.style.left = Math.max(bounds(field).minx, Math.min(num(thing.style.left), bounds(field).maxx - bounds(thing).width))+"px";
         thing.style.top = Math.max(bounds(field).miny, Math.min(num(thing.style.top), bounds(field).maxy - bounds(thing).height))+"px";
     }
+
+    //spawn fih
+    if (Math.random() < 0.0025) {
+        let fih = document.createElement("div");
+        fih.classList.add("thing");
+        fih.classList.add("grab");
+        fih.classList.add("fih");
+        fih.innerHTML = '<img src="images/fih.webp" width="100px">';
+        field.appendChild(fih);
+
+        const pond = document.querySelector(".pond");
+
+        fih.style.left = bounds(pond).minx + Math.random() * (bounds(pond).width - bounds(fih).width) + "px";
+        fih.style.top = bounds(pond).miny + Math.random() * (bounds(pond).height - bounds(fih).height) + "px";
+
+        fih.dataset.despawn = 5 * TPS;
+        fih.dataset.name = "FIH";
+
+        dragElement(fih);
+    }
+    
 }
 
 // called when a [thing] is dropped
 function onDrop(thing) {
     if (thing.classList.contains("item") && overlaps(thing, itemStorage)) {
-        itemToList(thing);
+        itemToList(thing, document.querySelector('#item-list>ul'));
         return;
     }
 
@@ -154,25 +185,7 @@ function bounds(e) {
 
 
 
-function listItemToElement(item) {
-    let elem = document.createElement('div');
-    elem.classList.add(item.classList);
-    elem.width = item.width;
-    elem.height = item.height;
-    elem.left = item.left;
-    elem.top = item.top;
-    elem.dataset = item.dataset;
-
-    let img = document.createElement('img');
-    img.src = item.image;
-    img.width = "100%";
-    img.height = "100%";
-    elem.appendChild(img);
-
-    field.appendChild(elem);
-}
-
-
+const TPS = 5;
 
 let duckStorage;
 let itemStorage;
@@ -186,7 +199,7 @@ window.addEventListener("load", (e) => {
         dragElement(grab);
     }
 
-    setInterval(tick, 200);
+    setInterval(tick, 1000 / TPS);
 
 });
 
