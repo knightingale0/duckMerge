@@ -2,8 +2,7 @@ function itemToList(element, list) {
     console.log("item to list", element);
     let listItem = document.createElement("li");
 
-    listItem.innerHTML += element.innerHTML;
-    listItem.innerHTML += element.dataset.name;
+    listItem.innerHTML += element.innerHTML + element.dataset.name;
     listItem.appendChild(element);  
     console.log(listItem)
     listItem.setAttribute('onclick', "listItemToElementFromLI(this)")  

@@ -65,8 +65,9 @@ function tick() {
 
     for (let duck of document.querySelectorAll("#field .duck")) {
         if (!duck.dataset.walkX && Math.random() < 0.25 / TPS) {
-            duck.dataset.walkX = Math.random() * (bounds(field).width - bounds(duck).width) + bounds(field).minx;
-            duck.dataset.walkY = Math.random() * (bounds(field).height - bounds(duck).height) + bounds(field).miny;
+            let pos = randomInBounds(field, duck);
+            duck.dataset.walkX = pos.x;
+            duck.dataset.walkY = pos.y;
         }
 
         if (duck.dataset.walkX) {
@@ -105,19 +106,17 @@ function tick() {
 
 
     //spawn fih
-    if (Math.random() < 0.025 / TPS) {
+    if (Math.random() < 0.05 / TPS) {
         let fih = document.createElement("div");
-        fih.classList.add("thing");
-        fih.classList.add("item");
-        fih.classList.add("grab");
-        fih.classList.add("fih");
+        fih.className = "thing item grab fih";
         fih.innerHTML = '<img src="images/fih.png" width="100%">';
         field.appendChild(fih);
 
         const pond = document.querySelector("#field .pond");
 
-        fih.style.left = bounds(pond).minx + Math.random() * (bounds(pond).width - bounds(fih).width) + "px";
-        fih.style.top = bounds(pond).miny + Math.random() * (bounds(pond).height - bounds(fih).height) + "px";
+        let pos = randomInBounds(pond, fih);
+        fih.style.left = pos.x + "px";
+        fih.style.top = pos.y + "px";
 
         fih.dataset.despawn = 5 * TPS;
         fih.dataset.name = "FIH";
@@ -171,11 +170,10 @@ function onDrop(thing) {
         }
     }
 
-
+    //hammer squishing things
     if (thing.dataset.name == "Hammer") {
         let near = nearest(thing);
         if (near && overlaps(thing, near)) {
-            const ogHeight = num(near.style.height);
             near.style.transform = 'scaleY(0.5)';
             setTimeout(() => {near.style.transform = ''}, 1500);
 
@@ -200,7 +198,6 @@ function merge() {
 function nearest(to) {
     let out = undefined;
     let bestDist = Infinity;
-
 
     let midx = bounds(to).midx;
     let midy = bounds(to).midy;
@@ -228,17 +225,29 @@ function overlaps(a, b) {
 };
 
 
+function randomInBounds(boundNode, placedNode) {
+    return {
+        x: bounds(boundNode).minx + Math.random() * (bounds(boundNode).width - bounds(placedNode).width),
+        y: bounds(boundNode).miny + Math.random() * (bounds(boundNode).height - bounds(placedNode).height)
+    }
+}
+
+
 let field;
 function bounds(e) {
+    let x = e.getBoundingClientRect().x;
+    let y = e.getBoundingClientRect().y;
+    let width = e.getBoundingClientRect().width;
+    let height = e.getBoundingClientRect().height;
     return {
-        minx: e.getBoundingClientRect().x,
-        maxx: e.getBoundingClientRect().x + e.getBoundingClientRect().width,
-        miny: e.getBoundingClientRect().y,
-        maxy: e.getBoundingClientRect().y + e.getBoundingClientRect().height,
-        width: e.getBoundingClientRect().width,
-        height: e.getBoundingClientRect().height,
-        midx: e.getBoundingClientRect().x + e.getBoundingClientRect().width * 0.5,
-        midy: e.getBoundingClientRect().y + e.getBoundingClientRect().height * 0.5
+        minx: x,
+        maxx: x + width,
+        miny: y,
+        maxy: y + height,
+        width: width,
+        height: height,
+        midx: x + width * 0.5,
+        midy: y + height * 0.5
     };
 }
 
