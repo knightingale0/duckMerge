@@ -156,12 +156,12 @@ function tick() {
 // called when a [thing] is dropped
 function onDrop(thing) {
     if (thing.classList.contains("item") && overlaps(thing, itemStorage)) {
-        itemToList(thing, document.querySelector('#item-list>ul'));
+        itemToList(thing, document.querySelector('#item-list ul'));
         return;
     }
 
     if (thing.classList.contains("duck") && overlaps(thing, duckStorage)) {
-        itemToList(thing, document.querySelector('#duck-list>ul'));
+        itemToList(thing, document.querySelector('#duck-list ul'));
         return;
     }
 
