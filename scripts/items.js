@@ -61,6 +61,17 @@ function tick() {
                 thing.remove();
             }
         }
+        if (thing.dataset.hatchTime) {
+            thing.dataset.hatchTime -= 1;
+            if (thing.dataset.hatchTime <= 0){
+                thing.remove()
+                let dnew = strToElem(newDuck(1, 2))
+                dragElement(dnew)
+                dnew.style.left = thing.style.left;
+                dnew.style.top = thing.style.top;
+                field.appendChild(dnew);
+            }
+        }
     }
 
     for (let duck of document.querySelectorAll("#field .duck")) {
@@ -145,12 +156,10 @@ function onDrop(thing) {
 
     if (thing.classList.contains('duck')) {
         if (near && overlaps(near, thing) && near.classList.contains('duck')) {
-            let dnew = newDuck(thing.dataset.id, near.dataset.id);
+            let dnew = strToElem(makeEgg());
 
-            const template = document.createElement('template');
-            template.innerHTML = dnew.trim();
-            dnew = template.content.firstElementChild;
             field.appendChild(dnew);
+            dnew.dataset.hatchTime = 10*TPS
             dnew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
             dnew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
 
@@ -191,11 +200,8 @@ function onDrop(thing) {
                 near.firstChild.src = "./images/duck.png"
                 near.dataset.name = `Duck #${near.dataset.id}`
 
-                let breadnew = newItem("Bread", "./images/bread.png", food = true);
+                let breadnew = strToElem(newItem("Bread", "./images/bread.png", food = true));
 
-                const template = document.createElement('template');
-                template.innerHTML = breadnew.trim();
-                breadnew = template.content.firstElementChild;
                 field.appendChild(breadnew);
                 breadnew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
                 breadnew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
@@ -218,17 +224,19 @@ function onDrop(thing) {
                     image = "./images/jellyfih.png"
                 }
 
-                let fishNew = newItem("Fish", image, food = true);
+                let fishNew = strToElem(newItem("Fish", image, food = true));
 
-
-                const template = document.createElement('template');
-                template.innerHTML = fishNew.trim();
-                fishNew = template.content.firstElementChild;
                 field.appendChild(fishNew);
                 fishNew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
                 fishNew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
 
                 dragElement(fishNew);
+            }
+            if (near.classList.contains('egg')) {
+                near.classList.remove('egg')
+
+                near.firstChild.src = "./images/duck.png"
+                near.dataset.name = `Duck #${near.dataset.id}`
             }
         }
     }
@@ -290,6 +298,12 @@ function bounds(e) {
         midx: x + width * 0.5,
         midy: y + height * 0.5
     };
+}
+
+function strToElem(str) {
+    const template = document.createElement('template');
+    template.innerHTML = str.trim();
+    return template.content.firstElementChild;
 }
 
 

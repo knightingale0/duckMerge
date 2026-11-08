@@ -68,17 +68,32 @@ function resetAll() {
     loadItems()
 }
 
+function makeEgg(){
+    let name=`egg`
+    let image = "./images/egg.png"
+    let egg = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${image}" alt=${name}></div>`
+
+    COUNTER++
+    return egg
+}
+
 function newDuck(parent1, parent2) {
-    // let name = formatted_names[Math.random(297)+1]
-    let sandwichDuckChance = Math.random(5)
+    let sandwichDuckChance = Math.random()*5
+    let eggDuckChance = Math.random()*10
     let name = `Duck #${COUNTER}`
     let imagePath = "images/duck.png"
     let duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}" alt=${name}></div>`
-    if (sandwichDuckChance == 1){
+    if (sandwichDuckChance < 2){
         name = "Sandwich Duck!"
         imagePath = "./images/breadduck.png"
         duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab sandwich" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}" alt=${name}></div>`
     }
+    if (eggDuckChance > 2){
+        name = "Egg Duck!"
+        imagePath = "./images/eggduck.png"
+        duck = `<div data-name="${name}" data-status="3" data-id="${COUNTER}" data-parent1="${parent1}" data-parent2="${parent2}" class="thing duck grab egg" style="left: 0px; top: 0px; z-index: 7;"><img src="${imagePath}" alt=${name}></div>`
+    }
+
     COUNTER++
     return duck
 }
@@ -103,12 +118,13 @@ function generateNewDuck() {
     loadDucks()
 }
 
-function generateMoreSeeds() {
-    let seeds = newItem("Seeds", "./images/plant1.png")
+function generateHammer() {
+    let hammer = newItem("Hammer", "./images/hammer.png")
+    dragElement(hammer)
     if (!USER_ITEMS) {
         USER_ITEMS = []
     }
-    USER_ITEMS.push(seeds)
+    USER_ITEMS.push(hammer)
     loadItems()
 }
 
