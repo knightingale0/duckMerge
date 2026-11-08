@@ -138,6 +138,22 @@ function onDrop(thing) {
         return;
     }
 
+    if (thing.classList.contains('duck')) {
+        let near = nearest(thing);
+        if (near && overlaps(near, thing) && near.classList.contains('duck')) {
+            let dnew = newDuck(thing.dataset.id, near.dataset.id);
+
+            const template = document.createElement('template');
+            template.innerHTML = dnew.trim();
+            dnew = template.content.firstElementChild;
+            field.appendChild(dnew);
+            dnew.style.left = (num(thing.style.left)+num(near.style.left)) / 2 + "px";
+            dnew.style.top = (num(thing.style.top)+num(near.style.top)) / 2 + "px";
+
+            dragElement(dnew);
+        }
+    }
+
     if (thing.classList.contains("item")) {
         let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
