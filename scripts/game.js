@@ -1,11 +1,3 @@
-// LISTS (dictionary with id)
-// - ducks in inventory
-// - ducks in field
-// - items in inventory
-// - items in field
-// - items in pond
-// - items in merge box
-// - gamestates (time, weather, acheivements/points)
 
 let USER_DUCKS = []
 let FIELD_DUCKS = []
@@ -13,6 +5,7 @@ let USER_ITEMS = []
 let FIELD_ITEMS = []
 let POND_ITEMS = []
 let MERGE_ITEMS = []
+// save gamestates (time, weather, acheivements/points)
 let COUNTER = 1
 
 function loadDucks() {
@@ -42,9 +35,8 @@ function loadItems() {
 
     if (USER_ITEMS && USER_ITEMS.length > 0) {
         USER_ITEMS.map(item => {
-            let imagePath = item.split('"')[9]
+            let imagePath = item.split('"')[11]
             let name = item.split('"')[1]
-            let id = item.split('"')
             listString += `<li onclick="listItemToElementFromLI(this)"><img src='${imagePath}'>${name}${item}</li>`
         })
         itemList.innerHTML = listString
@@ -85,8 +77,13 @@ function newDuck(parent1, parent2) {
     return duck
 }
 
-function newItem(name, image) {
-    let item = `<div data-name="${name}" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
+function newItem(name, image, food) {
+    let item
+    if (food) {
+        item = `<div data-name="${name}" data-type="food" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
+    } else {
+        item = `<div data-name="${name}" "" class="thing item grab" style="left: 0px; top: 0px; z-index: 7; display: 'none'" data-id="${COUNTER}"><img src="${image}"></div>`
+    }
     COUNTER++
     return item
 }
@@ -101,7 +98,7 @@ function generateNewDuck() {
 }
 
 function generateMoreSeeds() {
-    let seeds = newItem("seeds", "./images/seeds.png")
+    let seeds = newItem("Seeds", "./images/plant1.png")
     if (!USER_ITEMS) {
         USER_ITEMS = []
     }
@@ -147,7 +144,8 @@ window.addEventListener("load", (e) => {
     if (USER_ITEMS == undefined) {
         console.log("no inventory, giving starter items...")
         USER_ITEMS = []
-        USER_ITEMS.push(newItem("Seeds", "./images/seeds.png"))
+        USER_ITEMS.push(newItem("Apple", "./images/apple.png", food=true))
+        USER_ITEMS.push(newItem("Seeds", "./images/plant2.png"))
     }
 
     loadDucks()

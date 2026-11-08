@@ -62,8 +62,6 @@ function tick() {
     }
 
     for (let duck of document.querySelectorAll("#field .duck")) {
-        //duck.style.left = pxtonum(duck.style.left)+10+"px";
-
         if (!duck.dataset.walkX && Math.random()<0.25/TPS) {
             duck.dataset.walkX = Math.random() * (bounds(field).width-bounds(duck).width) + bounds(field).minx;
             duck.dataset.walkY = Math.random() * (bounds(field).height-bounds(duck).height) + bounds(field).miny;
@@ -110,7 +108,7 @@ function tick() {
         fih.classList.add("item");
         fih.classList.add("grab");
         fih.classList.add("fih");
-        fih.innerHTML = '<img src="images/pxfih-export.png" width="100%">';
+        fih.innerHTML = '<img src="images/fih.png" width="100%">';
         field.appendChild(fih);
 
         const pond = document.querySelector("#field .pond");

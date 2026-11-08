@@ -1,9 +1,7 @@
 function itemToList(element, list) {
     console.log("item to list", element);
-
     let listItem = document.createElement("li");
 
-    
     listItem.innerHTML += element.innerHTML;
     listItem.innerHTML += element.dataset.name;
     listItem.appendChild(element);  
@@ -12,9 +10,6 @@ function itemToList(element, list) {
   
     element.style.display = 'none';
     list.appendChild(listItem);
-
-
-
 }
 
 function listItemToElementFromLI(item) {
