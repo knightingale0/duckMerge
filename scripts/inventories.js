@@ -1,40 +1,32 @@
 function itemToList(element, list) {
-    console.log("item to list");
+    console.log("item to list", element);
 
     let listItem = document.createElement("li");
+    let image = element.childNodes[0]
+    image.className = "inventory-icon"
+    console.log(image)
 
-    // let button = document.createElement("button");
-    // button.innerText = "click";
-    // button.onclick = 'listItemToElementFromButton(this)';
-    // // button.addEventListener('click', function(event) {
-    // //     const button = event.currentTarget; 
-    // //     listItemToElement(button.parentNode);
-    // //     console.log("asdg");
-    // // });
-    // listItem.appendChild(button);
+    listItem.appendChild(image)
 
-    listItem.innerHTML += `<button onclick='listItemToElementFromButton(this)'>click</button><p>${element.dataset.name}</p>`;
-    
-    
+    listItem.innerHTML += `<button onclick='listItemToElementFromButton(this)'>click</button>${element.dataset.name}`;
     
     listItem.appendChild(element);
+    console.log()
     element.style.display = 'none';
     list.appendChild(listItem);
 }
 
-
 function listItemToElementFromButton(button) {
     console.log("AGH");
-    let elem = button.parentNode.querySelector('.item');
+    let elem = button.parentNode.querySelector('.thing');
 
     elem.style.display = 'block';
     field.appendChild(elem);
     button.parentNode.remove();
 }
 
-function listItemToElement(item) {
-    let elem = item.querySelector('.item');
+window.addEventListener("load", (e) => {
 
-    field.appendChild(elem);
-    item.remove();
-}
+    // add an event listener so li elements in the inventory, when clicked, do the move thing
+
+})

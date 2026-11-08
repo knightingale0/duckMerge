@@ -108,6 +108,11 @@ function onDrop(thing) {
         return;
     }
 
+    if (thing.classList.contains("duck") && overlaps(thing, duckStorage)) {
+        itemToList(thing, document.querySelector('#duck-list>ul'));
+        return;
+    }
+
     if (thing.classList.contains("item")) {
         let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
