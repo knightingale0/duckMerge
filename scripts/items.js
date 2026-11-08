@@ -151,10 +151,16 @@ function onDrop(thing) {
             template.innerHTML = dnew.trim();
             dnew = template.content.firstElementChild;
             field.appendChild(dnew);
-            dnew.style.left = (num(thing.style.left)+num(near.style.left)) / 2 + "px";
-            dnew.style.top = (num(thing.style.top)+num(near.style.top)) / 2 + "px";
+            dnew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
+            dnew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
 
             dragElement(dnew);
+        }
+
+        if (near && overlaps(near, thing) && near.classList.contains('pond')) {
+            thing.firstChild.src = "./images/fisherduck.png"
+            thing.dataset.name = `Fisher Duck`
+            thing.classList.add("fisher")
         }
     }
 
@@ -170,12 +176,59 @@ function onDrop(thing) {
     //hammer squishing things
     if (thing.dataset.name == "Hammer") {
         if (near && overlaps(thing, near)) {
+            var snd = new Audio("./images/bonk.wav"); // buffers automatically when created
+            snd.play();
             near.style.transform = 'scaleY(0.5)';
-            setTimeout(() => {near.style.transform = ''}, 1500);
+            setTimeout(() => { near.style.transform = '' }, 1500);
 
             if (near.classList.contains('duck')) {
                 delete near.dataset.walkX;
                 delete near.dataset.walkY;
+            }
+            if (near.classList.contains('sandwich')) {
+                near.classList.remove('sandwich')
+
+                near.firstChild.src = "./images/duck.png"
+                near.dataset.name = `Duck #${near.dataset.id}`
+
+                let breadnew = newItem("Bread", "./images/bread.png", food = true);
+
+                const template = document.createElement('template');
+                template.innerHTML = breadnew.trim();
+                breadnew = template.content.firstElementChild;
+                field.appendChild(breadnew);
+                breadnew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
+                breadnew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
+
+                dragElement(breadnew);
+            }
+            if (near.classList.contains('fisher')) {
+                near.classList.remove('fisher')
+
+                near.firstChild.src = "./images/duck.png"
+                near.dataset.name = `Duck #${near.dataset.id}`
+
+                let fishChoice = Math.random()*5
+                let image;
+                if (fishChoice < 2){
+                    image = "./images/bigfish.png"
+                } else if (fishChoice > 4) {
+                    image = "./images/krillion.png"
+                } else {
+                    image = "./images/jellyfih.png"
+                }
+
+                let fishNew = newItem("Fish", image, food = true);
+
+
+                const template = document.createElement('template');
+                template.innerHTML = fishNew.trim();
+                fishNew = template.content.firstElementChild;
+                field.appendChild(fishNew);
+                fishNew.style.left = (num(thing.style.left) + num(near.style.left)) / 2 + "px";
+                fishNew.style.top = (num(thing.style.top) + num(near.style.top)) / 2 + "px";
+
+                dragElement(fishNew);
             }
         }
     }
