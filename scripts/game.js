@@ -6,7 +6,7 @@ let FIELD_ITEMS = []
 let POND_ITEMS = []
 let MERGE_ITEMS = []
 // save gamestates (time, weather, acheivements/points)
-let COUNTER = 1
+let COUNTER = 0
 
 function loadInventory(listID, savedItems, kind) {
 
@@ -27,7 +27,6 @@ function loadInventory(listID, savedItems, kind) {
 
         let img = document.createElement("img");
         img.src = item.image;
-        img.alt = "";
 
         li.append(img, document.createTextNode(item.name));
 
@@ -39,6 +38,27 @@ function loadInventory(listID, savedItems, kind) {
     }
 
     itemList.appendChild(ul);
+}
+
+function renderFieldObjects(savedItems){
+
+    for (let item of savedItems) {
+        let div = document.createElement("div");
+        div.className = "";
+        for (let name of item.classes){
+            div.className += " " + name
+        }
+
+        div.dataset.id = item.id;
+        div.dataset.name = item.name;
+
+        let img = document.createElement("img");
+        img.src = item.image;
+
+        div.appendChild(img);
+        field.appendChild(div);
+    }
+
 }
 
 function resetItems() {
@@ -127,7 +147,7 @@ window.addEventListener("load", (e) => {
     console.log("window loaded")
 
     let localCounter = localStorage.getItem("counter")
-    let counter = undefined
+    let counter = 0
     if (localCounter != "undefined" && localCounter != null) {
         counter = JSON.parse(localStorage.getItem("counter"))
     }
@@ -136,11 +156,11 @@ window.addEventListener("load", (e) => {
     let localDucks = localStorage.getItem("user_ducks")
     let localItems = localStorage.getItem("user_items")
 
-    let user_ducks = undefined
+    let user_ducks = []
     if (localDucks != "undefined") {
         user_ducks = JSON.parse(localStorage.getItem("user_ducks"))
     }
-    let user_items = undefined
+    let user_items = []
     if (localItems != "undefined") {
         user_items = JSON.parse(localStorage.getItem("user_items"))
     }
@@ -148,14 +168,14 @@ window.addEventListener("load", (e) => {
     USER_DUCKS = user_ducks
     USER_ITEMS = user_items
 
-    if (USER_DUCKS == undefined) {
+    if (USER_DUCKS == []) {
         console.log("no ducks, giving starter ducks...")
         USER_DUCKS = []
         USER_DUCKS.push(newDuck(-1, -1))
         USER_DUCKS.push(newDuck(-1, -1))
     }
 
-    if (USER_ITEMS == undefined) {
+    if (USER_ITEMS == []) {
         console.log("no inventory, giving starter items...")
         USER_ITEMS = []
         USER_ITEMS.push(newItem("Apple", "./images/apple.png", food = true))
@@ -164,6 +184,24 @@ window.addEventListener("load", (e) => {
 
     loadInventory("#duck-list", USER_DUCKS, "duck")
     loadInventory("#item-list", USER_ITEMS, "item")
+
+    let localFieldDucks = localStorage.getItem("field_ducks")
+    let localFieldItems = localStorage.getItem("field_items")
+
+    let field_ducks = []
+    if (localFieldDucks != "undefined") {
+        user_ducks = JSON.parse(localStorage.getItem("field_ducks"))
+    }
+    let field_items = []
+    if (localFieldItems != "undefined") {
+        field_items = JSON.parse(localStorage.getItem("field_items"))
+    }
+
+    FIELD_DUCKS = field_ducks
+    FIELD_ITEMS = field_items
+
+    renderFieldObjects(FIELD_DUCKS)
+    renderFieldObjects(FIELD_ITEMS)
 });
 
 
