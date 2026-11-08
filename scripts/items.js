@@ -138,8 +138,12 @@ function onDrop(thing) {
         return;
     }
 
+    let near = nearest(thing);
+    if (near && near.id == "garbage-can") {
+        thing.remove();
+    }
+
     if (thing.classList.contains('duck')) {
-        let near = nearest(thing);
         if (near && overlaps(near, thing) && near.classList.contains('duck')) {
             let dnew = newDuck(thing.dataset.id, near.dataset.id);
 
@@ -155,7 +159,6 @@ function onDrop(thing) {
     }
 
     if (thing.classList.contains("item")) {
-        let near = nearest(thing);
         if (near && overlaps(thing, near) && near.classList.contains("duck")) {
             if (thing.dataset.type == "food") {
                 near.style.width = bounds(near).width * 1.5 + "px";
@@ -188,7 +191,6 @@ function onDrop(thing) {
 
     //hammer squishing things
     if (thing.dataset.name == "Hammer") {
-        let near = nearest(thing);
         if (near && overlaps(thing, near)) {
             near.style.transform = 'scaleY(0.5)';
             setTimeout(() => {near.style.transform = ''}, 1500);
