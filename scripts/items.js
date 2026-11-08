@@ -231,12 +231,12 @@ const TPS = 5;
 
 let duckStorage;
 let itemStorage;
-let merge;
+let mergeNode;
 window.addEventListener("load", (e) => {
     field = document.getElementById("field");
     duckStorage = document.getElementById("duck-storage");
     itemStorage = document.getElementById("item-storage");
-    merge = document.getElementById("merge-box");
+    mergeNode = document.getElementById("merge-box");
 
     for (let grab of document.querySelectorAll(".grab")) {
         dragElement(grab);
