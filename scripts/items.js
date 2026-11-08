@@ -149,7 +149,7 @@ function onDrop(thing) {
 
     if (thing.classList.contains("item") || thing.classList.contains("duck")) {
         console.log("item dropped on merge")
-        if (overlaps(thing, merge)) {
+        if (overlaps(thing, mergeNode)) {
             let size = MERGE_ITEMS.length
             if (MERGE_ITEMS.filter(e => e != thing).length == size) {
                 MERGE_ITEMS.push(thing)
@@ -162,10 +162,10 @@ function onDrop(thing) {
         if (MERGE_ITEMS.length == 2) {
             // needs at least one duck??
             console.log("could merge")
-            merge.style.backgroundColor = "#009911"
+            mergeNode.style.backgroundColor = "#009911"
             document.getElementById("merge-button").disabled = null
         } else {
-            merge.style.backgroundColor = "#9900bb"
+            mergeNode.style.backgroundColor = "#9900bb"
         }
     }
 }
